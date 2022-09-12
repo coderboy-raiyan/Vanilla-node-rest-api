@@ -1,4 +1,5 @@
-const { find, findById, create } = require('../models/productModels');
+/* eslint-disable object-curly-newline */
+const { find, findById, create, update } = require('../models/productModels');
 const getPostData = require('../utils/getPostData');
 
 async function getProducts(_, res) {
@@ -40,9 +41,34 @@ async function createProduct(req, res) {
         console.log(error);
     }
 }
+async function updateProduct(req, res, id) {
+    try {
+        const product = await findById(id);
+
+        if (!product) {
+            res.writeHead(404, { 'content-type': 'application/json' });
+            res.end(JSON.stringify({ success: false, message: 'Product not found' }));
+            return;
+        }
+        const { name, description, price } = JSON.parse(await getPostData(req));
+
+        const productData = {
+            name: name || product.name,
+            description: description || product.description,
+            price: price || product.price,
+        };
+
+        const newProduct = await update(id, productData);
+        res.writeHead(201, { 'content-type': 'application/json' });
+        res.end(JSON.stringify(newProduct));
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 module.exports = {
     getProducts,
     getProduct,
     createProduct,
+    updateProduct,
 };

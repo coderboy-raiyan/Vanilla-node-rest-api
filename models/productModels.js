@@ -1,4 +1,4 @@
-const path = require('path');
+const dbPath = require('../utils/dbPath');
 const products = require('../data/products.json');
 const writeDataToFile = require('../utils/writeDataToFile');
 
@@ -16,7 +16,6 @@ function findById(id) {
 }
 
 async function create(product) {
-    const dbPath = path.join(`${__dirname}`, '..', 'data', 'products.json');
     return new Promise((resolve) => {
         const newProduct = { id: String(products.length + 1), ...product };
         products.push(newProduct);
@@ -24,9 +23,18 @@ async function create(product) {
         resolve(newProduct);
     });
 }
+async function update(id, product) {
+    return new Promise((resolve) => {
+        const index = products.findIndex((p) => p.id === id);
+        products[index] = { id, ...product };
+        writeDataToFile(dbPath, products);
+        resolve(products[index]);
+    });
+}
 
 module.exports = {
     find,
     findById,
     create,
+    update,
 };
