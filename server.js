@@ -32,17 +32,20 @@ server.on('request', (req, res) => {
             removeProduct(req, res, pathUrl[3]);
         }
     } else {
-        res.writeHead(404, { 'content-type': 'text/html' });
+        res.writeHead(200, { 'content-type': 'text/html' });
         res.end(
-            `<pre class="notranslate"><code>
-                # Routes
-                GET      /api/products
-                POST     /api/products
-                GET      /api/products/:id
-                PUT      /api/products/:id
-                DELETE   /api/products/:id
-                
-                </code></pre>
+            `<div style="display: flex; justify-content:center; padding-top : 100px">
+            <div>
+            <h1> # Routes</h1>
+            <ul>
+            <li> GET   &nbsp &nbsp   /api/products</li>
+            <li> POST    &nbsp &nbsp  &nbsp /api/products</li>
+            <li> GET    &nbsp &nbsp   /api/products/:id</li>
+            <li> PUT     &nbsp &nbsp  /api/products/:id</li>
+            <li> DELETE  &nbsp &nbsp  /api/products/:id</li>
+            </ul>
+            </div>
+            </div>
             `,
         );
     }
