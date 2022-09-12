@@ -32,8 +32,19 @@ server.on('request', (req, res) => {
             removeProduct(req, res, pathUrl[3]);
         }
     } else {
-        res.writeHead(404, { 'content-type': 'application/json' });
-        res.end(JSON.stringify({ message: 'Route not Found' }));
+        res.writeHead(404, { 'content-type': 'text/html' });
+        res.end(
+            `<pre class="notranslate"><code>
+                # Routes
+                GET      /api/products
+                POST     /api/products
+                GET      /api/products/:id
+                PUT      /api/products/:id
+                DELETE   /api/products/:id
+                
+                </code></pre>
+            `,
+        );
     }
 });
 
