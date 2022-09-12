@@ -1,5 +1,5 @@
-/* eslint-disable object-curly-newline */
-const { find, findById, create, update } = require('../models/productModels');
+// eslint-disable-next-line prettier/prettier
+const { find, findById, create, update, findByIdAndDelete } = require('../models/productModels');
 const getPostData = require('../utils/getPostData');
 
 async function getProducts(_, res) {
@@ -66,9 +66,34 @@ async function updateProduct(req, res, id) {
     }
 }
 
+async function removeProduct(req, res, id) {
+    try {
+        const product = await findById(id);
+
+        if (!product) {
+            res.writeHead(404, { 'content-type': 'application/json' });
+            res.end(JSON.stringify({ success: false, message: 'Product not found' }));
+            return;
+        }
+
+        const deleteProduct = await findByIdAndDelete(id);
+        res.writeHead(201, { 'content-type': 'application/json' });
+        res.end(
+            JSON.stringify({
+                success: true,
+                message: 'Product Deleted Successfully',
+                data: deleteProduct,
+            }),
+        );
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 module.exports = {
     getProducts,
     getProduct,
     createProduct,
     updateProduct,
+    removeProduct,
 };

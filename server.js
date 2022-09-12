@@ -4,6 +4,7 @@ const {
     getProduct,
     createProduct,
     updateProduct,
+    removeProduct,
 } = require('./controllers/productController');
 
 const server = http.createServer();
@@ -25,6 +26,10 @@ server.on('request', (req, res) => {
     } else if (pathUrl[1] === 'api' && pathUrl[2] === 'products' && req.method === 'PUT') {
         if (pathUrl[3]) {
             updateProduct(req, res, pathUrl[3]);
+        }
+    } else if (pathUrl[1] === 'api' && pathUrl[2] === 'products' && req.method === 'DELETE') {
+        if (pathUrl[3]) {
+            removeProduct(req, res, pathUrl[3]);
         }
     } else {
         res.writeHead(404, { 'content-type': 'application/json' });

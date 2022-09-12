@@ -32,9 +32,18 @@ async function update(id, product) {
     });
 }
 
+async function findByIdAndDelete(id) {
+    return new Promise((resolve) => {
+        const modifiedProducts = products.filter((product) => product.id !== id);
+        writeDataToFile(dbPath, modifiedProducts);
+        resolve(products.find((p) => p.id === id));
+    });
+}
+
 module.exports = {
     find,
     findById,
     create,
     update,
+    findByIdAndDelete,
 };
